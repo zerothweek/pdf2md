@@ -50,6 +50,7 @@ if pdf_file:
             cuts.append((pages, name, directory))
 
     if st.button("Split and Save"):
+        output_root = os.path.join('datasets', 'pdfs', output_root)
         os.makedirs(output_root, exist_ok=True)
         for pages_str, filename, sub_dir in cuts:
             dir_path = os.path.join(output_root, sub_dir)

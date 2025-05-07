@@ -1,0 +1,20 @@
+# Use the pdf2md:v0.1
+FROM pdf2md:v0.1
+
+# requirements.txt installation
+COPY requirements.txt /workspace/
+RUN pip install --ignore-installed streamlit
+RUN pip3 install --no-cache-dir -r /workspace/requirements.txt
+
+RUN python3 -m venv /workspace/pymupdf4llm \
+    && /workspace/pymupdf4llm/bin/pip install --upgrade pip \
+    && /workspace/pymupdf4llm/bin/pip install pymupdf4llm ipykernel python-dotenv
+
+RUN jupyter notebook --generate-config && \
+    echo "c.NotebookApp.ip = '0.0.0.0'" >> ~/.jupyter/jupyter_notebook_config.py && \
+    echo "c.NotebookApp.open_browser = False" >> ~/.jupyter/jupyter_notebook_config.py && \
+    echo "c.NotebookApp.port = 8080" >> ~/.jupyter/jupyter_notebook_config.py && \
+    echo "c.NotebookApp.token = ''" >> ~/.jupyter/jupyter_notebook_config.py && \
+    echo "c.NotebookApp.password = ''" >> ~/.jupyter/jupyter_notebook_config.py
+
+CMD ["bin/bash"]
